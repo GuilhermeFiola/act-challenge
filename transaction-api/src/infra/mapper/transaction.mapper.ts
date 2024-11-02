@@ -1,5 +1,5 @@
-import {TransactionDto} from "../../application/dto/transaction.dto";
-import {TransactionEntity} from "../../core/entity/transaction.entity";
+import {TransactionDto} from '../../application/dto/transaction.dto'
+import {TransactionEntity} from '../../core/entity/transaction.entity'
 
 export class TransactionMapper {
     static MapDtoToEntity(dto: TransactionDto): TransactionEntity {

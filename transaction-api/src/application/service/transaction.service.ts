@@ -1,6 +1,6 @@
 import * as dotenv from 'dotenv'
-import {TransactionRepository} from "../../infra/repository/transaction.repository";
-import {TransactionEntity} from "../../core/entity/transaction.entity";
+import {TransactionRepository} from '../../infra/repository/transaction.repository'
+import {TransactionEntity} from '../../core/entity/transaction.entity'
 
 dotenv.config()
 

@@ -1,5 +1,5 @@
-import {Database, open} from "sqlite";
-import sqlite3 from "sqlite3";
+import {Database, open} from 'sqlite'
+import sqlite3 from 'sqlite3'
 
 export abstract class BaseRepository {
     protected db: Database | undefined

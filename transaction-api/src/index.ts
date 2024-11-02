@@ -3,7 +3,7 @@ import express from 'express'
 import helmet from 'helmet'
 
 import { transactionRouter } from './application/router/transaction.router'
-import {TransactionRepository} from "./infra/repository/transaction.repository";
+import {TransactionRepository} from './infra/repository/transaction.repository'
 
 dotenv.config()
 

@@ -1,6 +1,6 @@
 import {TransactionEntity} from '../../core/entity/transaction.entity'
-import {IWrite} from "../../core/interface/repository/write.interface";
-import {BaseRepository} from "./base.repository";
+import {IWrite} from '../../core/interface/repository/write.interface'
+import {BaseRepository} from './base.repository'
 
 export class TransactionRepository extends BaseRepository implements IWrite<TransactionEntity> {
 

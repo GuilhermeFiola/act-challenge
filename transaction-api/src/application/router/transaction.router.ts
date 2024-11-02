@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 import express, { Request, Response } from 'express'
-import {TransactionService} from "../service/transaction.service";
-import {TransactionMapper} from "../../infra/mapper/transaction.mapper";
+import {TransactionService} from '../service/transaction.service'
+import {TransactionMapper} from '../../infra/mapper/transaction.mapper'
 
 export const transactionRouter = express.Router()
 
