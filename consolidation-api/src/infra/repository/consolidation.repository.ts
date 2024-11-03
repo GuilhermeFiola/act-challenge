@@ -2,7 +2,7 @@ import {ConsolidationEntity} from '../../core/entity/consolidation.entity'
 import {IWrite} from '../../core/interface/repository/write.interface'
 import {BaseRepository} from './base.repository'
 import {DateUtils} from '../../core/utils/date.utils'
-import {ErrorHandler} from "../../core/utils/error.handler";
+import {ErrorHandler} from '../../core/utils/error.handler'
 
 export class ConsolidationRepository extends BaseRepository implements IWrite<ConsolidationEntity> {
 

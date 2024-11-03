@@ -1,6 +1,6 @@
 import {v7 as uuidv7} from 'uuid'
 import {BaseEntity} from './base.entity'
-import {TransactionType} from "../utils/constants";
+import {TransactionType} from '../utils/constants'
 
 export class ConsolidationEntity extends BaseEntity {
     private _inflow: number

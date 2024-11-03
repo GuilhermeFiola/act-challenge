@@ -4,8 +4,8 @@ import {ConsolidationEntity} from '../../core/entity/consolidation.entity'
 import {TransactionMessageDto} from '../dto/transaction.message.dto'
 import {container} from 'tsyringe'
 import {CacheService} from './cache.service'
-import {DateUtils} from "../../core/utils/date.utils";
-import {ErrorHandler} from "../../core/utils/error.handler";
+import {DateUtils} from '../../core/utils/date.utils'
+import {ErrorHandler} from '../../core/utils/error.handler'
 
 dotenv.config()
 
@@ -45,18 +45,15 @@ export class ConsolidationService {
         }
     }
 
-    async getConsolidationByDate(date: Date): Promise<ConsolidationEntity> {
+    async getConsolidationByDate(date: Date): Promise<ConsolidationEntity | undefined> {
         try {
             const consolidationCache = this.cacheService.getCache(DateUtils.DateToDatabase(date))
             if (consolidationCache) return consolidationCache
 
-            let consolidation: ConsolidationEntity
             const consolidationDb = await this.consolidationRepository.findByDate(date)
-            if (!consolidationDb) {
-                consolidation = new ConsolidationEntity(0, 0, 0, date)
-            } else {
-                consolidation = new ConsolidationEntity(consolidationDb.inflow, consolidationDb.outflow, consolidationDb.netValue, new Date(consolidationDb.date), consolidationDb.id)
-            }
+
+            if (!consolidationDb) return undefined
+            const consolidation = new ConsolidationEntity(consolidationDb.inflow, consolidationDb.outflow, consolidationDb.netValue, new Date(consolidationDb.date), consolidationDb.id)
 
             this.cacheService.setCache(DateUtils.DateToDatabase(consolidation.date), consolidation)
             return consolidation

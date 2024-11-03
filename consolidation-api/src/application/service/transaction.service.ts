@@ -20,12 +20,14 @@ export class TransactionService {
         try {
             await this.messageBroker.connect()
 
-            await this.messageBroker.consumeMessages((msg) => {
+            await this.messageBroker.consumeMessages(async (msg) => { // Make callback async
                 if (msg) {
                     try {
                         const messageContent = JSON.parse(msg.content.toString())
                         const transactionDto = TransactionMapper.MapMessageToDto(messageContent)
-                        this.consolidationService.updateConsolidation(transactionDto)
+
+                        // Await updateConsolidation to ensure it completes before processing next message
+                        await this.consolidationService.updateConsolidation(transactionDto)
                     } catch (error) {
                         // At this point we should control incorrect messages and put in a poison queue or any other structure to be validated later
                         // Here I'm just logging the result to keep the queue going without finishing the app

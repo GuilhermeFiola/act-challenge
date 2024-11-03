@@ -1,0 +1,14 @@
+# Non functional availability test
+config:
+  target: "http://localhost:7001"  # Actual API URL
+  phases:
+    - duration: 1   # Duration in seconds
+      arrivalRate: 500  # Number of requests per second
+  defaults:
+    headers:
+      Content-Type: "application/json"
+
+scenarios:
+  - flow:
+      - get:
+          url: "/api/v1/consolidation/2024-11-04"  # Consolidation endpoint

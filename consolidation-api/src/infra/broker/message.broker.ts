@@ -1,5 +1,5 @@
 import amqp, { Connection, Channel, Options, ConsumeMessage } from 'amqplib'
-import {ErrorHandler} from "../../core/utils/error.handler";
+import {ErrorHandler} from '../../core/utils/error.handler'
 
 export class MessageBroker {
     private connection: Connection | null = null
@@ -18,6 +18,7 @@ export class MessageBroker {
         try {
             this.connection = await amqp.connect(this.url)
             this.channel = await this.connection.createChannel()
+            await this.channel.prefetch(1, true)
         } catch (error) {
             const errorMessage = ErrorHandler.ReturnErrorMessage(error, 'Error connecting to message queue')
             throw new Error(errorMessage)
@@ -33,11 +34,11 @@ export class MessageBroker {
         })
     }
 
-    async consumeMessages(callback: (msg: ConsumeMessage | null) => void): Promise<void> {
+    async consumeMessages(callback: (msg: ConsumeMessage | null) => Promise<void>): Promise<void> {
         await this.assertQueue()
-        this.channel?.consume(this.queueName, (msg) => {
+        this.channel?.consume(this.queueName, async (msg) => {
             if (msg) {
-                callback(msg)
+                await callback(msg)
                 this.channel?.ack(msg)
             }
         })

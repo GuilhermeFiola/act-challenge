@@ -27,10 +27,16 @@ transactionRouter.post('/', async (req: Request, res: Response) => {
     }
 })
 
-transactionRouter.get('/', async (res: Response) => {
+transactionRouter.get('/', async (_: Request, res: Response) => {
     try {
         const transactionService = new TransactionService()
         const result = await transactionService.getAllTransactions()
+
+        if (!result) {
+            res.status(204)
+            return
+        }
+
         res.status(200).send(result)
     } catch (error) {
         const errorMessage = ErrorHandler.ReturnErrorMessage(error, 'Error getting all transactions')
