@@ -1,6 +1,7 @@
 import {TransactionEntity} from '../../core/entity/transaction.entity'
 import {IWrite} from '../../core/interface/repository/write.interface'
 import {BaseRepository} from './base.repository'
+import {ErrorHandler} from '../../core/utils/error.handler'
 
 export class TransactionRepository extends BaseRepository implements IWrite<TransactionEntity> {
 
@@ -12,7 +13,7 @@ export class TransactionRepository extends BaseRepository implements IWrite<Tran
 
     async createTableStructure(): Promise<void> {
         try {
-            await this.openDb()
+            await this.connect()
             const createTableQuery = `
                 CREATE TABLE IF NOT EXISTS ${this.tableName} (
                     id VARCHAR(30) NOT NULL PRIMARY KEY,
@@ -22,23 +23,19 @@ export class TransactionRepository extends BaseRepository implements IWrite<Tran
                     date DATETIME NOT NULL
                 )`
 
-            const test = await this.db?.exec(createTableQuery)
-            console.log(test)
+            await this.db?.exec(createTableQuery)
         } catch (error) {
-            let errorMessage = 'Error executing creating table for transaction'
-            if (error instanceof Error) {
-                errorMessage = error.message
-            }
+            const errorMessage = ErrorHandler.ReturnErrorMessage(error, 'Error executing creating table for transaction')
             throw new Error(errorMessage)
         } finally {
-            await this.closeDb()
+            await this.close()
         }
     }
 
-    async create(item: TransactionEntity): Promise<any> {
+    async create(item: TransactionEntity): Promise<boolean> {
         try {
-            await this.openDb()
-            return await this.db?.run(
+            await this.connect()
+            await this.db?.run(
                 `INSERT INTO ${this.tableName} (id, type, description, amount, date) VALUES (:id, :type, :description, :amount, :date)`,
                 {
                     ':id': item.id,
@@ -48,31 +45,26 @@ export class TransactionRepository extends BaseRepository implements IWrite<Tran
                     ':date': item.date.toISOString()
                 }
             )
+            return true
         } catch (error) {
-            let errorMessage = 'Error creating new transaction'
-            if (error instanceof Error) {
-                errorMessage = error.message
-            }
+            const errorMessage = ErrorHandler.ReturnErrorMessage(error, 'Error creating new transaction')
             throw new Error(errorMessage)
         } finally {
-            await this.closeDb()
+            await this.close()
         }
     }
 
     async findAll(): Promise<any> {
         try {
-            await this.openDb()
-            return await this.db?.get(
+            await this.connect()
+            return await this.db?.all(
                 `SELECT id, type, description, amount, date FROM ${this.tableName}`
             )
         } catch (error) {
-            let errorMessage = 'Error returning all transactions'
-            if (error instanceof Error) {
-                errorMessage = error.message
-            }
+            const errorMessage = ErrorHandler.ReturnErrorMessage(error, 'Error returning all transactions')
             throw new Error(errorMessage)
         } finally {
-            await this.closeDb()
+            await this.close()
         }
     }
 }

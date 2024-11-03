@@ -2,12 +2,13 @@ import * as dotenv from 'dotenv'
 import express from 'express'
 import helmet from 'helmet'
 
-import { transactionRouter } from './application/router/transaction.router'
-import {TransactionRepository} from './infra/repository/transaction.repository'
+import { consolidationRouter } from './application/router/consolidation.router'
+import {ConsolidationRepository} from './infra/repository/consolidation.repository'
+import {TransactionService} from './application/service/transaction.service'
 
 dotenv.config()
 
-function main() {
+async function main() {
     // Variables
     console.log(process.cwd())
 
@@ -31,19 +32,24 @@ function main() {
 
     const app = express()
 
+    // Queue process
+    const transactionService = new TransactionService()
+    await transactionService.transactionBroker()
+
     // Database
 
-    const transactionRepository = new TransactionRepository(DATABASE)
+    const consolidationRepository = new ConsolidationRepository(DATABASE)
     const promises: Array<Promise<any>> = []
-    promises.push(transactionRepository.createTableStructure())
+    promises.push(consolidationRepository.createTableStructure())
 
     // Configuration
+
     Promise.all(promises)
         .then(() => {
             app.use(helmet())
             app.use(express.json())
 
-            app.use('/api/v1/transaction', transactionRouter)
+            app.use('/api/v1/consolidation', consolidationRouter)
 
             // Server start
             app.listen(PORT, () => {

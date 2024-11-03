@@ -1,4 +1,4 @@
-export interface TransactionDto {
+export interface TransactionRequestDto {
     type: string
     description: string
     amount: number
