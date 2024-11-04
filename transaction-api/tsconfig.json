@@ -13,7 +13,8 @@
       "outDir": "dist",
       "rootDir": "./",
       "esModuleInterop": true,
-      "strict": true
+      "strict": true,
+      "resolveJsonModule": true
     },
     "include": ["./src/**/*.ts", "./test/**/*.ts"],
     "exclude": ["node_modules"]

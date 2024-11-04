@@ -33,7 +33,7 @@ transactionRouter.get('/', async (_: Request, res: Response) => {
         const result = await transactionService.getAllTransactions()
 
         if (!result) {
-            res.status(204)
+            res.status(204).send('')
             return
         }
 

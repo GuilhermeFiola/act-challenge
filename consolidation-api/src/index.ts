@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv'
 import express from 'express'
 import helmet from 'helmet'
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from '../swagger.json'
 
 import { consolidationRouter } from './application/router/consolidation.router'
 import {ConsolidationRepository} from './infra/repository/consolidation.repository'
@@ -10,7 +12,6 @@ dotenv.config()
 
 async function main() {
     // Variables
-    console.log(process.cwd())
 
     if (!process.env.PORT) {
         console.error('API port is required')
@@ -49,6 +50,7 @@ async function main() {
             app.use(helmet())
             app.use(express.json())
 
+            app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
             app.use('/api/v1/consolidation', consolidationRouter)
 
             // Server start

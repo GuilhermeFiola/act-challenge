@@ -1,0 +1,83 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Consolidation API",
+    "description": "Consolidation API documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7001/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/consolidation/{date}": {
+      "get": {
+        "summary": "Get consolidation by date",
+        "tags": ["Consolidation"],
+        "parameters": [
+          {
+            "name": "date",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "description": "Date in format yyyy-MM-dd"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Item found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Consolidation"
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No content"
+          },
+          "400": {
+            "description": "Incorrect date parameter"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Consolidation": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "12345678-1234-1234-1234-123456789012"
+          },
+          "inflow": {
+            "type": "number",
+            "example": 100.5
+          },
+          "outflow": {
+            "type": "number",
+            "example": 30.85
+          },
+          "netValue": {
+            "type": "number",
+            "example": 80
+          },
+          "date": {
+            "type": "string",
+            "example": "2024-11-04T00:00:00.000Z"
+          }
+        }
+      }
+    }
+  }
+}

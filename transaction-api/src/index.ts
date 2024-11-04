@@ -1,6 +1,8 @@
 import * as dotenv from 'dotenv'
 import express from 'express'
 import helmet from 'helmet'
+import swaggerUi from 'swagger-ui-express'
+import swaggerDocument from '../swagger.json'
 
 import { transactionRouter } from './application/router/transaction.router'
 import {TransactionRepository} from './infra/repository/transaction.repository'
@@ -9,7 +11,6 @@ dotenv.config()
 
 function main() {
     // Variables
-    console.log(process.cwd())
 
     if (!process.env.PORT) {
         console.error('API port is required')
@@ -43,6 +44,7 @@ function main() {
             app.use(helmet())
             app.use(express.json())
 
+            app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument))
             app.use('/api/v1/transaction', transactionRouter)
 
             // Server start

@@ -1,0 +1,137 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Transaction API",
+    "description": "Transaction API documentation",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:7000/api/v1",
+      "description": "Local server"
+    }
+  ],
+  "paths": {
+    "/transaction": {
+      "get": {
+        "summary": "Get all transactions",
+        "tags": ["Transactions"],
+        "responses": {
+          "200": {
+            "description": "All transactions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Transaction"
+                  }
+                }
+              }
+            }
+          },
+          "204": {
+            "description": "No content"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new transaction",
+        "tags": ["Transaction"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionInput"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Transaction"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "12345678-1234-1234-1234-123456789012"
+          },
+          "type": {
+            "type": "string",
+            "example": "C"
+          },
+          "description": {
+            "type": "string",
+            "example": "Crédito"
+          },
+          "amount": {
+            "type": "number",
+            "example": 100
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-04T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "id",
+          "type",
+          "description",
+          "amount",
+          "date"
+        ]
+      },
+      "TransactionInput": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "example": "D"
+          },
+          "description": {
+            "type": "string",
+            "example": "Débito"
+          },
+          "amount": {
+            "type": "number",
+            "example": 80
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2024-11-04T00:00:00.000Z"
+          }
+        },
+        "required": [
+          "type",
+          "description",
+          "amount",
+          "date"
+        ]
+      }
+    }
+  }
+}
