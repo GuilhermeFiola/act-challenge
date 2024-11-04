@@ -5,6 +5,7 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json ./
+COPY swagger.json ./
 
 RUN npm ci
 
@@ -28,6 +29,7 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package*.json ./
+COPY swagger.json ./
 COPY .env ./
 
 RUN npm ci --production
