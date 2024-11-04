@@ -21,7 +21,7 @@ export class ConsolidationRepository extends BaseRepository implements IWrite<Co
                     date DATE NOT NULL UNIQUE,
                     inflow FLOAT NOT NULL DEFAULT 0.0,
                     outflow FLOAT NOT NULL DEFAULT 0.0,
-                    netValue FLOAT NOT NULL  DEFAULT 0.0
+                    net_value FLOAT NOT NULL  DEFAULT 0.0
                 )`
 
             await this.db?.exec(createTableQuery)
@@ -35,16 +35,16 @@ export class ConsolidationRepository extends BaseRepository implements IWrite<Co
         try {
             await this.connect()
             await this.db?.run(
-                `INSERT INTO ${this.tableName} (id, date, inflow, outflow, netValue) 
-                 VALUES (:id, :date, :inflow, :outflow, :netValue)
+                `INSERT INTO ${this.tableName} (id, date, inflow, outflow, net_value) 
+                 VALUES (:id, :date, :inflow, :outflow, :net_value)
                  ON CONFLICT(id) DO UPDATE 
-                 SET inflow=:inflow, outflow=:outflow, netValue=:netValue`,
+                 SET inflow=:inflow, outflow=:outflow, net_value=:net_value`,
                 {
                     ':id': item.id,
                     ':date': DateUtils.DateToDatabase(item.date),
                     ':inflow': item.inflow,
                     ':outflow': item.outflow,
-                    ':netValue': item.netValue
+                    ':net_value': item.netValue
                 }
             )
             return true
@@ -58,7 +58,7 @@ export class ConsolidationRepository extends BaseRepository implements IWrite<Co
         try {
             await this.connect()
             return await this.db?.get(
-                `SELECT id, date, inflow, outflow, netValue 
+                `SELECT id, date, inflow, outflow, net_value AS netValue 
                  FROM ${this.tableName}
                  WHERE date=?`,
                 DateUtils.DateToDatabase(date)
