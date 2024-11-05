@@ -11,7 +11,8 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build
+# Testing and building  project
+RUN npm run create
 
 FROM node:20-alpine
 
